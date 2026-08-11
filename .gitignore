@@ -1,0 +1,36 @@
+# Python bytecode / build junk
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Logs and debug output
+*.log
+debug_*.txt
+debug_*.json
+
+# Editors / OS cruft
+.vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local scratch — never meant to ship
+*.bak
+*.orig
+*.rej
+*.tmp
+temp/
+tmp/
+scratch/
+_local/
+
+# Virtualenvs
+.venv/
+venv/
+env/

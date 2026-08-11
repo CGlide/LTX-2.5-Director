@@ -1,0 +1,14 @@
+[project]
+name = "whatdreamscost-csglide"
+description = "LTX Director (CS) — modded LTX Director with reference-sheet / @char / MSR + provider Analyze backend. Coexists with the original WhatDreamsCost-ComfyUI without collisions."
+version = "2.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/CGlide/WhatDreamsCost-CSGlide"
+
+[tool.comfy]
+PublisherId = "REPLACE_WITH_YOUR_REGISTRY_PUBLISHER_ID"
+DisplayName = "WhatDreamsCost-CSGlide"
+Icon = ""
+includes = []
