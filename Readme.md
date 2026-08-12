@@ -13,6 +13,8 @@ that version keeps the reference features listed below.
 ## Early version — expect bugs
 Experimental for now!
 Image to video, text to video work.
+First last frame work.
+
 
 Need to check this : nodes_lt.py, class LTXVDualCFGGuider but it is late
 LTX 2.5 is days old and so is this. It works, and it is what I am using myself, but it
