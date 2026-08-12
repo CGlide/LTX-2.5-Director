@@ -18,7 +18,9 @@ Image to video, text to video work.
 
 First last frame work.(for the last frame, you can right click "pin to last frame")
 
-So far I tested it with Prompt Relay off
+Multiple key frames work! pretty cool
+
+TESTED WITH PROMPT RELAY OFF !
 
 Need to check this : nodes_lt.py, class LTXVDualCFGGuider but it is late
 LTX 2.5 is days old and so is this. It works, and it is what I am using myself, but it
