@@ -1,3 +1,4 @@
+
 # LTX 2.5 Director
 
 A ComfyUI timeline node for building multi-shot LTX videos: drop images and prompts
@@ -7,7 +8,7 @@ onto a timeline, set a window, render. Built on
 This is the **LTX 2.5** build. If you are on LTX 2.3, use
 [WhatDreamsCost-CSGlide](https://github.com/CGlide/WhatDreamsCost-CSGlide) instead —
 that version keeps the reference features listed below.
-
+<img width="795" height="804" alt="Capture d&#39;écran 2026-08-12 145713" src="https://github.com/user-attachments/assets/899b237c-8761-40ff-a293-a6551087e631" />
 ---
 
 ## Early version — expect bugs
