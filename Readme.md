@@ -68,5 +68,8 @@ In `example_workflows/`.
 
 ## Credits
 
-Forked from [WhatDreamsCost](https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI).
+Based on [WhatDreamsCost's LTX Director](https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI)
+— the original node this is forked from.
+
 LTX models by [Lightricks](https://github.com/Lightricks).
+
