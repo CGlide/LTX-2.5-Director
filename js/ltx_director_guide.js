@@ -4,9 +4,9 @@ import { app } from "../../scripts/app.js";
 // All configuration (images, insert frames, strengths) comes from
 // the guide_data output of Prompt Relay Encode (Timeline).
 app.registerExtension({
-    name: "Comfy.LTXDirectorGuideCS",
+    name: "Comfy.LTXDirectorGuideCS25",
     async nodeCreated(node) {
-        if (node.comfyClass !== "LTXDirectorGuideCS") return;
+        if (node.comfyClass !== "LTXDirectorGuideCS25") return;
 
         // Hide retake_mode widget on LiteGraph as it is dynamically auto-detected from the timeline data.
         const w = node.widgets?.find(x => x.name === "retake_mode");

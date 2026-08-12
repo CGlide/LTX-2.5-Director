@@ -341,7 +341,7 @@ class LTXChunkWriter:
     RETURN_TYPES = ("IMAGE", "STRING", "STRING")
     RETURN_NAMES = ("images", "handoff_folder", "info")
     FUNCTION = "write_chunk"
-    CATEGORY = "WhatDreamsCost CS"
+    CATEGORY = "WhatDreamsCost CS 2.5"
     OUTPUT_NODE = True
     DESCRIPTION = (
         "Writes a chunk of a long video out as PNG frames instead of encoding video, and copies the "
@@ -616,7 +616,7 @@ class LTXChunkAssembler:
     RETURN_TYPES = ("STRING", "STRING")
     RETURN_NAMES = ("final_folder", "info")
     FUNCTION = "assemble"
-    CATEGORY = "WhatDreamsCost CS"
+    CATEGORY = "WhatDreamsCost CS 2.5"
     OUTPUT_NODE = True
     DESCRIPTION = (
         "Joins the chunks of a run into one continuous PNG sequence, cross-dissolving the "
@@ -871,13 +871,13 @@ def _assemble_run(run, runs_sub, overlap_frames, crossfade, match_levels,
 
 
 NODE_CLASS_MAPPINGS = {
-    "LTXChunkWriterCS": LTXChunkWriter,
-    "LTXChunkAssemblerCS": LTXChunkAssembler,
+    "LTXChunkWriterCS25": LTXChunkWriter,
+    "LTXChunkAssemblerCS25": LTXChunkAssembler,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "LTXChunkWriterCS": "LTX Chunk Writer CS",
-    "LTXChunkAssemblerCS": "LTX Chunk Assembler CS",
+    "LTXChunkWriterCS25": "LTX Chunk Writer CS (2.5)",
+    "LTXChunkAssemblerCS25": "LTX Chunk Assembler CS (2.5)",
 }
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']

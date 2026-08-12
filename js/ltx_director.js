@@ -10664,6 +10664,33 @@ class TimelineEditor {
         toggleEndFrameBtn.innerHTML = `Convert to End Frame`;
         toggleEndFrameBtn.onclick = () => {
           seg.isEndFrame = true;
+          // Python places the guide at the block's RIGHT EDGE (seg_start + length - 1).
+          // A block dragged near the end never lands exactly on the last rendered frame -
+          // MIN_SEGMENT_LENGTH makes it impossible by hand - so the last few frames free-run
+          // past the image and the tail turns to mush. If the edge is already within one
+          // latent block (8 frames) of the render end, snap it there; that is unambiguously
+          // what "end frame" meant. Blocks further back are real mid-timeline keyframes and
+          // are left exactly where they are.
+          const startF = Math.max(0, this.getStartFrames() || 0);
+          const endF = parseInt(this.endFramesWidget && this.endFramesWidget.value, 10);
+          const duration = (Number.isFinite(endF) && endF > startF)
+            ? (endF - startF)
+            : this.getDurationFrames();
+          const windowEnd = startF + (Math.ceil((duration - 1) / 8) * 8 + 1);
+          const right = seg.start + seg.length;
+          // No upper bound: a block whose right edge sits PAST the render end is the same
+          // mistake as one sitting just short of it - Python either clips it or drops the
+          // segment entirely. The timeline canvas draws ~15% of empty runway past the window
+          // end, so dragging a block beyond it is easy and common.
+          if (right > windowEnd - 8) {
+            const len = Math.max(MIN_SEGMENT_LENGTH, parseInt(seg.length, 10) || MIN_SEGMENT_LENGTH);
+            seg.start = Math.max(startF, windowEnd - len);
+            seg.length = windowEnd - seg.start;
+            seg.isAnchor = false;
+            console.log("[LTXDirector]", `end frame snapped to last frame: block ${seg.start}-${seg.start + seg.length} (was right edge ${right}, render ends ${windowEnd}).`);
+          } else {
+            console.log("[LTXDirector]", `end frame left in place: right edge ${right}, render ends ${windowEnd} - treated as a mid-timeline keyframe. Use Pin to Last Frame to force it to the end.`);
+          }
           this.commitChanges();
           this.render();
           this.dismissContextMenu();
@@ -10685,23 +10712,30 @@ class TimelineEditor {
       pinLastBtn.innerHTML = `Pin to Last Frame`;
       pinLastBtn.title = "Make this image the final rendered frame: snaps the block's right edge to the end of the timeline and marks it as an end frame.";
       pinLastBtn.onclick = () => {
+        // The rendered clip is NOT the timeline duration. Python pads the DURATION to the
+        // LTX 8n+1 grid: ltxv_length = ceil((duration_frames - 1) / 8) * 8 + 1. A 10s / 240f
+        // timeline actually renders 241 frames, so pinning to frame 240 leaves the last
+        // frame free-running past the image - which is why "the last image is not the last
+        // frame". Pad the DURATION, then offset by the window start.
+        //
+        // Padding (start + duration) instead is wrong whenever start_frame is not a multiple
+        // of 8: Python computes insert_frame as (seg_start + length - 1 - start_frame) and
+        // compares it against a length derived from duration alone, so the guide lands past
+        // the end of the render and the end frame is silently lost.
+        const startF = Math.max(0, this.getStartFrames() || 0);
         const endF = parseInt(this.endFramesWidget && this.endFramesWidget.value, 10);
-        const total = Number.isFinite(endF) && endF > 0
-          ? endF
-          : (this.getStartFrames() + this.getDurationFrames());
-        // The rendered clip is NOT the timeline duration. Python pads it to the LTX
-        // 8n+1 grid: ltxv_length = ceil((frames - 1) / 8) * 8 + 1. A 10s / 250-frame
-        // timeline actually renders 257 frames, so pinning to frame 250 leaves the last
-        // 7 frames free-running past the image - which is exactly why "the last image is
-        // not the last frame". Pin to the PADDED length instead.
-        const padded = Math.ceil((total - 1) / 8) * 8 + 1;
+        const duration = (Number.isFinite(endF) && endF > startF)
+          ? (endF - startF)
+          : this.getDurationFrames();
+        const paddedLen = Math.ceil((duration - 1) / 8) * 8 + 1;   // == Python's ltxv_length
+        const windowEnd = startF + paddedLen;                       // absolute last frame + 1
         const len = Math.max(MIN_SEGMENT_LENGTH, parseInt(seg.length, 10) || MIN_SEGMENT_LENGTH);
-        // Right edge on the real last frame: start + length === padded.
-        seg.start = Math.max(0, padded - len);
-        seg.length = padded - seg.start;
+        // Right edge on the real last frame: start + length === windowEnd.
+        seg.start = Math.max(startF, windowEnd - len);
+        seg.length = windowEnd - seg.start;
         seg.isEndFrame = true;
         seg.isAnchor = false;   // an anchor is a pinned keyframe at its START, the opposite of this
-        console.log("[LTXDirector]", `pinned to last frame: block ${seg.start}-${seg.start + seg.length}; timeline ${total}f, LTX renders ${padded}f (guide at frame ${seg.start + seg.length - 1}).`);
+        console.log("[LTXDirector]", `pinned to last frame: block ${seg.start}-${seg.start + seg.length}; window ${startF}+${duration}f, LTX renders ${paddedLen}f (guide at absolute frame ${seg.start + seg.length - 1}, relative ${seg.start + seg.length - 1 - startF}).`);
         this.commitChanges();
         this.render();
         this.dismissContextMenu();
@@ -11671,7 +11705,7 @@ class TimelineEditor {
 
   _findChunkWriter() {
     const nodes = (app.graph && (app.graph._nodes || app.graph.nodes)) || [];
-    return nodes.find(n => n.comfyClass === "LTXChunkWriterCS" || n.type === "LTXChunkWriterCS");
+    return nodes.find(n => n.comfyClass === "LTXChunkWriterCS25" || n.type === "LTXChunkWriterCS25");
   }
 
   // Resolves when the queued prompt finishes, rejects if it errors.
@@ -13362,7 +13396,7 @@ const APPENDED_WIDGET_DEFAULTS = [
 ];
 
 app.registerExtension({
-  name: "LTXDirectorCS",
+  name: "LTXDirectorCS25",
   async setup() {
     // On Run, ask the chosen analyze backend to release its model from VRAM so it doesn't
     // compete with LTX generation. Only fires when an LTX Director is in the graph and its
@@ -13373,7 +13407,7 @@ app.registerExtension({
     app.queuePrompt = async function (...args) {
       try {
         const nodes = app.graph?._nodes || [];
-        const director = nodes.find(n => n && (n.comfyClass === "LTXDirectorCS" || n.type === "LTXDirectorCS"));
+        const director = nodes.find(n => n && (n.comfyClass === "LTXDirectorCS25" || n.type === "LTXDirectorCS25"));
         if (director) {
           // Read provider settings from the node's saved timeline_data widget.
           let provider = "ollama", baseUrl = "", model = "";
@@ -13400,7 +13434,7 @@ app.registerExtension({
     };
   },
   async beforeRegisterNodeDef(nodeType, nodeData, app) {
-    if (nodeData.name === "LTXDirectorCS") {
+    if (nodeData.name === "LTXDirectorCS25") {
 
       const onNodeCreated = nodeType.prototype.onNodeCreated;
       nodeType.prototype.onNodeCreated = function () {

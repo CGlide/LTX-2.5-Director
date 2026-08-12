@@ -1195,9 +1195,9 @@ class LTXDirector(io.ComfyNode):
     @classmethod
     def define_schema(cls):
         return io.Schema(
-            node_id="LTXDirectorCS",
-            display_name="LTX Director CS",
-            category="WhatDreamsCost CS",
+            node_id="LTXDirectorCS25",
+            display_name="LTX Director CS (2.5)",
+            category="WhatDreamsCost CS 2.5",
             description=(
                 "Same as Prompt Relay Encode, but local prompts and segment lengths are edited "
                 "visually as draggable blocks on a timeline. The duration_frames input only sets the "
@@ -1984,7 +1984,7 @@ class LTXDirector(io.ComfyNode):
 
 
 NODE_CLASS_MAPPINGS = {
-    "LTXDirectorCS": LTXDirector,
+    "LTXDirectorCS25": LTXDirector,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {

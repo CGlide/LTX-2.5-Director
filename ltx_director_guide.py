@@ -793,7 +793,7 @@ class LTXDirectorCropGuides:
     RETURN_TYPES = ("CONDITIONING", "CONDITIONING", "LATENT")
     RETURN_NAMES = ("positive", "negative", "latent")
     FUNCTION = "execute"
-    CATEGORY = "WhatDreamsCost CS"
+    CATEGORY = "WhatDreamsCost CS 2.5"
 
     def execute(self, positive, negative, latent):
         latent_image = latent["samples"].clone()
@@ -818,6 +818,6 @@ class LTXDirectorCropGuides:
         return (positive, negative, {"samples": latent_image, "noise_mask": noise_mask})
 
 NODE_CLASS_MAPPINGS = {
-    "LTXDirectorGuideCS": LTXDirectorGuide,
-    "LTXDirectorCropGuidesCS": LTXDirectorCropGuides,
+    "LTXDirectorGuideCS25": LTXDirectorGuide,
+    "LTXDirectorCropGuidesCS25": LTXDirectorCropGuides,
 }
