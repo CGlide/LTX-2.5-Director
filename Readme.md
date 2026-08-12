@@ -1,3 +1,4 @@
+
 # LTX 2.5 Director
 
 A ComfyUI timeline node for building multi-shot LTX videos: drop images and prompts
@@ -8,14 +9,26 @@ This is the **LTX 2.5** build. If you are on LTX 2.3, use
 [WhatDreamsCost-CSGlide](https://github.com/CGlide/WhatDreamsCost-CSGlide) instead —
 that version keeps the reference features listed below.
 
----
+<div align="center">
+<img width="665" height="669" alt="Capture d&#39;écran 2026-08-12 160229" src="https://github.com/user-attachments/assets/dfb8ebbd-9956-4142-b07b-af7d505a06a7" />
 
-## Early version — expect bugs
+<img width="795" height="804" alt="Capture d&#39;écran 2026-08-12 145713" src="https://github.com/user-attachments/assets/899b237c-8761-40ff-a293-a6551087e631" />
+---
+</div>
+## Early version 
+
 Experimental for now!
-Need to check this : nodes_lt.py, class LTXVDualCFGGuider but it is late
-LTX 2.5 is days old and so is this. It works, and it is what I am using myself, but it
-has not been through much testing beyond my own machine. Expect rough edges, and please
-open an issue if you hit one — a console log (F12) helps enormously.
+
+Image to video, text to video work.
+
+First last frame work.(for the last frame, you can right click "pin to last frame")
+
+Multiple key frames work! pretty cool
+
+Prompt relay, text and image work as well
+
+
+Early so can have bug.
 
 ## What works
 
@@ -67,9 +80,6 @@ Gemma 4 text encoder and will not load a 2.3 one.
 
 In `example_workflows/`.
 
-## Credits
-
-## Credits
 
 ## Credits
 
