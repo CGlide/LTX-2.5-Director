@@ -17,8 +17,6 @@ that version keeps the reference features listed below.
 </div>
 ## Early version 
 
-Experimental for now!
-
 Image to video, text to video work.
 
 First last frame work.(for the last frame, you can right click "pin to last frame")
