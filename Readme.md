@@ -9,12 +9,12 @@ This is the **LTX 2.5** build. If you are on LTX 2.3, use
 [WhatDreamsCost-CSGlide](https://github.com/CGlide/WhatDreamsCost-CSGlide) instead —
 that version keeps the reference features listed below.
 
-
+<div align="center">
 <img width="665" height="669" alt="Capture d&#39;écran 2026-08-12 160229" src="https://github.com/user-attachments/assets/dfb8ebbd-9956-4142-b07b-af7d505a06a7" />
 
 <img width="795" height="804" alt="Capture d&#39;écran 2026-08-12 145713" src="https://github.com/user-attachments/assets/899b237c-8761-40ff-a293-a6551087e631" />
 ---
-
+</div>
 ## Early version 
 
 Experimental for now!
