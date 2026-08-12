@@ -80,9 +80,6 @@ Gemma 4 text encoder and will not load a 2.3 one.
 
 In `example_workflows/`.
 
-## Credits
-
-## Credits
 
 ## Credits
 
